@@ -109,6 +109,7 @@ def settings_adduser():
     if adduserpw == addconfirmpw:
         user_data[addusername] = {}
         user_data[addusername]["password"] = adduserpw
+        user_data[addusername]["admin"] = False
         cprint("User Added!", "green")
         time.sleep(0.3)
         save_data()
@@ -290,6 +291,8 @@ def settings_admin_edituser():
             print("epw - Edit Password")
             print("euname - Edit Username")
             print("ep - Edit Points")
+            print("pro - Promote to Admin")
+            print("de - Demote to user")
             selection = input("> ")
             if selection == "epw":
                 print("Please enter user new password:")
@@ -354,6 +357,18 @@ def settings_admin_edituser():
                     cprint("Invalid Input!", "red")
                     time.sleep(1)
                     settings_admin_edituser()
+            elif selection == "pro":
+                user_data[user]["admin"] = True
+                cprint("Successful!", "green")
+                time.sleep(0.3)
+                save_data()
+                settings_admin_edituser()
+            elif selection == "de":
+                user_data[user]["admin"] = False
+                cprint("Successful!", "green")
+                time.sleep(0.3)
+                save_data()
+                settings_admin_edituser()
             else:
                 cprint("Invalid Input!", "red")
                 time.sleep(1)
@@ -387,6 +402,7 @@ def settings_admin():
 
 def settings():
     global user_data
+    global username
     clrscr()
     print("")
     print("Settings")
@@ -396,8 +412,8 @@ def settings():
     print("3. Add Song Playlist")
     print("4. List Playlist")
     print("")
-    #if user_data[username] == ["admin"]:
-        #print("8. Admin Zone")
+    if user_data[username]["admin"]:
+        print("8. Admin Zone")
     print("9. Back to Menu")
     print("")
     print("Please select by number:")
@@ -494,8 +510,7 @@ def game():
     print("")
     print("Game")
     print("--------------------")
-    print("")
-    with output(initial_len=2, interval=0) as output_lines:
+    with output(initial_len=3, interval=0) as output_lines:
         i = 0
         while i <= 10:
             if i < len(qs_song["title"]):
@@ -506,8 +521,8 @@ def game():
                 dis_artistname = colored(qs_song["preformer"][0:i] + "_"*(len(qs_song["title"])-i+1)+"     ", "blue")
             else:
                 dis_artistname = qs_song["preformer"]
-            output_lines[0] = dis_songname
-            output_lines[1] = dis_artistname
+            output_lines[1] = dis_songname
+            output_lines[2] = dis_artistname
             time.sleep(2)
             i = i+1
         output_lines[0] = colored(qs_song["title"], "cyan")
@@ -552,14 +567,12 @@ def login():
     print("Password:")
     password = getpass("(Hidden)> ")
 
-
     #Check identity
     try:
         if user_data[username]["password"] == password:
             #Pass, clear screen
             cprint("Login Success! Welcome back, %s"%username, "green")
             time.sleep(0.5)
-            clrscr()
             menu()
         else:
             #Wrong password
