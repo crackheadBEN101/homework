@@ -284,99 +284,101 @@ def settings_admin_edituser():
     if selection == "quit":
         settings_admin()
     else:
-        try:
-            user = user_data[selection]
-            user = selection
-            print("Please enter command:")
-            print("epw - Edit Password")
-            print("euname - Edit Username")
-            print("ep - Edit Points")
-            print("pro - Promote to Admin")
-            print("de - Demote to user")
-            selection = input("> ")
-            if selection == "epw":
-                print("Please enter user new password:")
-                newpw = getpass("(Hidden)> ")
-                print("Please enter user new password again:")
-                confirmpw = getpass("(Hidden)> ")
-                if newpw == confirmpw:
-                    user_data[user]["password"] = newpw
-                    cprint("Password Reset Succesful!", "green")
-                    time.sleep(0.3)
-                    save_data()
-                    settings_admin_edituser()
-                else:
-                    cprint("Password entered is not the same!", "red")
-                    time.sleep(1)
-                    settings_admin_edituser()
-            elif selection == "ename":
-                print("Please enter new username:")
-                newusername = input("> ")
-                if newusername in user_data:
-                    cprint("Username Taken!", "red")
-                    time.sleep(1)
-                    settings_admin_edituser()
-                user_data[newusername] = user_data[user]
-                user_data.pop(user)
-                cprint("Username Changed!", "green")
-                time.sleep(0.3)
-                save_data()
-                settings_admin_edituser()
-            elif selection == "ep":
-                if "points" in user_data[user]:
-                    cprint("Current User "+user+" has "+user_data[user]["points"], "yellow")
-                else:
-                    cprint("Current User "+user+" doesn't have points", "red")
-                print("")
+            try:
+                user = user_data[selection]
+                user = selection
                 print("Please enter command:")
-                print("add [int] - Add Points")
-                print("del [int] - Remove Points")
-                print("set [int] - Set Points")
+                print("epw - Edit Password")
+                print("euname - Edit Username")
+                print("ep - Edit Points")
+                print("pro - Promote to Admin")
+                print("de - Demote to user")
                 selection = input("> ")
-                command = selection.split()[0]
-                value = selection.split()[1]
-                if action == "add":
-                    user_data[user]["points"] = user_data[user]["points"] + int(value)
+                if selection == "epw":
+                    print("Please enter user new password:")
+                    newpw = getpass("(Hidden)> ")
+                    print("Please enter user new password again:")
+                    confirmpw = getpass("(Hidden)> ")
+                    if newpw == confirmpw:
+                        user_data[user]["password"] = newpw
+                        cprint("Password Reset Succesful!", "green")
+                        time.sleep(0.3)
+                        save_data()
+                        settings_admin_edituser()
+                    else:
+                        cprint("Password entered is not the same!", "red")
+                        time.sleep(1)
+                        settings_admin_edituser()
+                elif selection == "ename":
+                    print("Please enter new username:")
+                    newusername = input("> ")
+                    if newusername in user_data:
+                        cprint("Username Taken!", "red")
+                        time.sleep(1)
+                        settings_admin_edituser()
+                    user_data[newusername] = user_data[user]
+                    user_data.pop(user)
+                    cprint("Username Changed!", "green")
+                    time.sleep(0.3)
+                    save_data()
+                    settings_admin_edituser()
+                elif selection == "ep":
+                    if "points" in user_data[user]:
+                        cprint("Current User "+user+" has "+user_data[user]["points"], "yellow")
+                    else:
+                        cprint("Current User "+user+" doesn't have points", "red")
+                    print("")
+                    print("Please enter command:")
+                    print("add [int] - Add Points")
+                    print("del [int] - Remove Points")
+                    print("set [int] - Set Points")
+                    selection = input("> ")
+                    command = selection.split()[0]
+                    value = selection.split()[1]
+                    if action == "add":
+                        user_data[user]["points"] = user_data[user]["points"] + int(value)
+                        cprint("Successful!", "green")
+                        time.sleep(0.3)
+                        save_data()
+                        settings_admin_edituser()
+                    elif action == "del":
+                        user_data[user]["points"] = user_data[user]["points"] - int(value)
+                        cprint("Successful!", "green")
+                        time.sleep(0.3)
+                        save_data()
+                        settings_admin_edituser()
+                    elif action == "set":
+                        user_data[user]["points"] = int(value)
+                        cprint("Successful!", "green")
+                        time.sleep(0.3)
+                        save_data()
+                        settings_admin_edituser()
+                    else:
+                        cprint("Invalid Input!", "red")
+                        time.sleep(1)
+                        settings_admin_edituser()
+                elif selection == "pro":
+                    user_data[user]["admin"] = True
                     cprint("Successful!", "green")
                     time.sleep(0.3)
                     save_data()
                     settings_admin_edituser()
-                elif action == "del":
-                    user_data[user]["points"] = user_data[user]["points"] - int(value)
+                elif selection == "de":
+                    user_data[user]["admin"] = False
                     cprint("Successful!", "green")
                     time.sleep(0.3)
                     save_data()
                     settings_admin_edituser()
-                elif action == "set":
-                    user_data[user]["points"] = int(value)
-                    cprint("Successful!", "green")
-                    time.sleep(0.3)
-                    save_data()
+                elif selection == "quit":
                     settings_admin_edituser()
                 else:
                     cprint("Invalid Input!", "red")
                     time.sleep(1)
                     settings_admin_edituser()
-            elif selection == "pro":
-                user_data[user]["admin"] = True
-                cprint("Successful!", "green")
-                time.sleep(0.3)
-                save_data()
-                settings_admin_edituser()
-            elif selection == "de":
-                user_data[user]["admin"] = False
-                cprint("Successful!", "green")
-                time.sleep(0.3)
-                save_data()
-                settings_admin_edituser()
-            else:
-                cprint("Invalid Input!", "red")
+            except KeyError:
+                cprint("User Not Found!", "red")
                 time.sleep(1)
                 settings_admin_edituser()
-        except KeyError:
-            cprint("User Not Found!", "red")
-            time.sleep(1)
-            settings_admin_edituser()
 
 
 def settings_admin():
