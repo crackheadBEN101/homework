@@ -414,9 +414,7 @@ def settings():
     print("")
     if user_data[username]["admin"]:
         print("8. Admin Zone")
-        print("9. Back to Menu")
-    elif user_data[username] !=["admin"]:
-        print("9. Back to Menu")
+    print("9. Back to Menu")
     print("")
     print("Please select by number:")
     selection = input("> ")
@@ -429,7 +427,8 @@ def settings():
     elif selection == "4":
         settings_listplaylist()
     elif selection == "8":
-        settings_admin()
+        if user_data[username]["admin"]:
+            settings_admin()
     elif selection == "9":
         menu()
     else:
