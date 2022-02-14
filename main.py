@@ -295,21 +295,26 @@ def settings_admin_edituser():
                 print("de - Demote to user")
                 selection = input("> ")
                 if selection == "epw":
-                    print("Please enter user new password:")
-                    newpw = getpass("(Hidden)> ")
-                    print("Please enter user new password again:")
-                    confirmpw = getpass("(Hidden)> ")
-                    if newpw == confirmpw:
-                        user_data[user]["password"] = newpw
-                        cprint("Password Reset Succesful!", "green")
-                        time.sleep(0.3)
-                        save_data()
-                        settings_admin_edituser()
+                    ynpw = input("Are you sure you want to edit your password? Y(yes)/N(no)> ")
+                    if (ynpw == "Y" or ynpw =="y"):
+                        clrscr()
+                        print("Please enter user new password:")
+                        newpw = getpass("(Hidden)> ")
+                        print("Please enter user new password again:")
+                        confirmpw = getpass("(Hidden)> ")
+                        if newpw == confirmpw:
+                            user_data[user]["password"] = newpw
+                            cprint("Password Reset Succesful!", "green")
+                            time.sleep(0.3)
+                            save_data()
+                            settings_admin_edituser()
+                        else:
+                            cprint("Password entered is not the same!", "red")
+                            time.sleep(1)
+                            settings_admin_edituser()
                     else:
-                        cprint("Password entered is not the same!", "red")
-                        time.sleep(1)
                         settings_admin_edituser()
-                elif selection == "ename":
+                elif selection == "euname":
                     print("Please enter new username:")
                     newusername = input("> ")
                     if newusername in user_data:
