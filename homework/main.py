@@ -18,7 +18,6 @@ username = ""
 
 DATA_FILE = "data.json"
 SONG_FILE = "song.csv"
-player_score = "score.json"
 
 def clrscr():
    if os.name == 'posix':
